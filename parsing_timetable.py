@@ -2,6 +2,20 @@ import requests
 from bs4 import BeautifulSoup
 
 
+def transform(d):
+    if not d.islower:
+        if len(d) == 6:
+            su = d[0:3] + "-" + d[3:6]
+        elif len(d) == 7:
+            su = d[0:3] + "-" + d[4:7]
+    elif d.islower:
+        if len(d) == 6:
+            su = d[0].upper() + d[1:3] + "-" + d[3:6]
+        elif len(d) == 7:
+            su = d[0].upper() + d[1:3] + "-" + d[4:7]
+    return su
+
+
 def get_html(url, params=''):
     r = requests.get(url, params=params)
     return r
@@ -309,7 +323,7 @@ def parser(group):
                    'Б17-В01': 'https://home.mephi.ru/study_groups/11040/schedule',
                    'Б17-В02': 'https://home.mephi.ru/study_groups/11041/schedule',
                    'Б16-В03': 'https://home.mephi.ru/study_groups/11008/schedule'}
-    group = processing(group)
+    group = transform(group)
     url = GROUPS_URLS[group]
     html = get_html(url)
     if html.status_code == 200:
